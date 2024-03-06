@@ -19,16 +19,13 @@ export const Auth = ({action}: authProps) => {
 
     const handleClick = async () => {
         try{
-            const response = await axios.post (`${BACKEND_URL}/api/v1/user/${action === "Sign up" ? "signup": "signin"}`, {
-                postInputs
-            })
+            const response = await axios.post(`${BACKEND_URL}/api/v1/user/${action === "Sign up" ? "signup": "signin"}`, postInputs)
             const jwt = response.data
             localStorage.setItem("token", jwt)
             navigate('/blogs')
         } catch(e) {
-            alert("signup request failed")
+            alert(e)
         }
-
     }
 
     return (
