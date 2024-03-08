@@ -17,14 +17,20 @@ export const Auth = ({action}: authProps) => {
         password: ""
     })
 
-    const handleClick = async () => {
+    const handleClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault()
         try{
             const response = await axios.post(`${BACKEND_URL}/api/v1/user/${action === "Sign up" ? "signup": "signin"}`, postInputs)
-            const jwt = response.data
+            const jwt = response.data.jwt
             localStorage.setItem("token", jwt)
             navigate('/blogs')
-        } catch(e) {
-            alert(e)
+        } catch(e: any) {
+            console.log(e)
+            if(e.response) {
+                alert(e.response.data.error)
+            } else {
+                alert("error reaching server try again")
+            }
         }
     }
 
