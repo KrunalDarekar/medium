@@ -72,7 +72,7 @@ userRouter.post('/signup', async(c) => {
       if(!user) {
         c.status(403)
         return c.json({
-          message: "user does not exist"
+          error: "Invalid user credentials"
         })
       }
     
@@ -84,7 +84,7 @@ userRouter.post('/signup', async(c) => {
     } catch(e) {
       c.status(403)
       return c.json({
-        error: "user does not exist"
+        error: "invalid user credentials"
       })
     }
   
