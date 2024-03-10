@@ -14,7 +14,7 @@ export const blogRouter = new Hono<{
     }
 }>()
 
-blogRouter.use('/*', async (c, next) => {
+const authMiddleware =  async (c:any , next:any) => {
     const header = c.req.header("authorization") || "";
     const token = header.split(" ")[1]
   
@@ -26,21 +26,21 @@ blogRouter.use('/*', async (c, next) => {
     try {
         const res = await verify(token, c.env.JWT_SECRET)
   
-    if(!res.id){
-      c.status(403)
-      return c.json({ error : "user unauthorised"})
-    }
+        if(!res.id){
+        c.status(403)
+        return c.json({ error : "user unauthorised"})
+        }
 
-    c.set('userId', res.id)
-    await next()
+        c.set('userId', res.id)
+        await next()
     } catch(e) {
         return c.json({
             error: "user unauthorised"
         })
     }
-  })
+  }
 
-blogRouter.post("/", async(c) => {
+blogRouter.post("/", authMiddleware, async(c) => {
     const prisma = new PrismaClient({
         datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate())
@@ -66,7 +66,7 @@ blogRouter.post("/", async(c) => {
     })
 })
   
-blogRouter.put("/", async(c) => {
+blogRouter.put("/", authMiddleware , async(c) => {
     const prisma = new PrismaClient({
         datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate())
