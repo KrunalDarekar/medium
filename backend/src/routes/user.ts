@@ -11,6 +11,49 @@ export const userRouter = new Hono<{
     }
 }>()
 
+userRouter.get('/me', async(c) => {
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate())
+
+  const headers = c.req.header("authorization") || ""
+  const token = headers.split(' ')[1]
+  if(!token) {
+    c.status(403)
+    return c.json({
+      error: "no token found"
+    })
+  }
+  
+  try {
+    const res = await verify(token, c.env.JWT_SECRET)
+    if(!res.id){
+    c.status(403)
+    return c.json({ 
+      error : "token has expired sign in again"})
+    }
+
+    const response = await prisma.user.findFirst({
+      where: {
+        id: res.id
+      },
+      select: {
+        name: true,
+        email: true,
+        description: true,
+      }
+    })
+
+    return c.json(response)
+
+  } catch(e) {
+    c.status(403)
+    return c.json({
+      error: "user not signed in"
+    })
+  }
+})
+
 userRouter.post('/signup', async(c) => {
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
