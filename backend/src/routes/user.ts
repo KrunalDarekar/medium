@@ -44,6 +44,13 @@ userRouter.get('/me', async(c) => {
       }
     })
 
+    if(!response) {
+      c.status(403)
+      return c.json({
+        error: "token has expired sign in again"
+      })
+    }
+
     return c.json(response)
 
   } catch(e) {
