@@ -4,7 +4,7 @@ export const userAtom = atom({
     key: 'userAtomkey',
     default: {
         name: "Anonymous",
-        emai: null,
+        email: null,
         description: null
     }
 })

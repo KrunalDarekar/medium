@@ -1,4 +1,4 @@
-import { useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { isSignedInAtom, userAtom } from "../state/atoms/atoms";
 import { useEffect } from "react";
 import axios from "axios";
@@ -9,11 +9,12 @@ import { useNavigate } from "react-router-dom";
 export const Landing = () => {
     const setUser = useSetRecoilState(userAtom);
     const setIsSignedIn = useSetRecoilState(isSignedInAtom);
+    const isSignedIn = useRecoilValue(isSignedInAtom)
     const token = localStorage.getItem('token')
     const navigate = useNavigate()
 
     useEffect( () => {
-        if(token) {
+        if(token && !isSignedIn) {
             axios.get(`${BACKEND_URL}/api/v1/user/me`, {
                 headers: {
                 Authorization: `Bearer ${token}`

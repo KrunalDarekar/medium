@@ -1,19 +1,16 @@
+import { generateHTML } from "@tiptap/react"
 import { Blog } from "../hooks"
 import Avatar from "./Avatar"
+import { extensions } from "./Tiptap"
+import parse from 'html-react-parser';
+
 
 const FullBlog = ({blog}: { blog: Blog}) => {
+    const contentHtml = generateHTML(blog.content , extensions)
     return <div className="flex justify-center max-w-screen-lg mx-auto mt-5 md:mt-10">
         <div className="grid md:grid-cols-12 w-full px-10">
-            <div className="md:col-span-8">
-                <div className="text-3xl font-extrabold">
-                    {blog.title}
-                </div>
-                <div className="text-slate-500 mt-2">
-                    published on August 24, 2023
-                </div>
-                <div className="mt-2">
-                    {blog.content}
-                </div>
+            <div className="md:col-span-8 tiptap">
+                {parse(contentHtml)}
             </div>
             <div className="md:col-span-4 mt-3 md:mt-0 md:ml-3 font-medium">
                 Author
