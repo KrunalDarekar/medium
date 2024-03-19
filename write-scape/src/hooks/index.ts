@@ -2,8 +2,13 @@ import axios from "axios"
 import { useEffect, useState } from "react"
 import { BACKEND_URL } from "../config"
 
+interface content {
+    content: Array<any>,
+    type: "doc",
+}
+
 export interface Blog {
-    content: JSON,
+    content: content,
     author: {
         name: string,
     }

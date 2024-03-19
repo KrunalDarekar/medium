@@ -3,7 +3,7 @@
     outline: none;
 
     > * + * {
-      margin-top: 0.75em;
+      margin-top: 0.6em;
     }
   
     ul,
@@ -42,16 +42,16 @@
     /* Style for h2 */
     h2 {
       font-size: 1.9rem; /* Adjust font size as needed */
-      margin-top: 2rem; /* Adjust spacing as needed */
-      margin-bottom: 1rem; /* Adjust spacing as needed */
+      margin-top: 0.8rem; /* Adjust spacing as needed */
+      margin-bottom: 0.8rem; /* Adjust spacing as needed */
       font-weight: 600;
     }
     
     /* Style for h3 */
     h3 {
       font-size: 1.5rem; /* Adjust font size as needed */
-      margin-top: 1.5rem; /* Adjust spacing as needed */
-      margin-bottom: 0.5rem; /* Adjust spacing as needed */
+      margin-top: 0.6rem; /* Adjust spacing as needed */
+      margin-bottom: 0.6rem; /* Adjust spacing as needed */
       font-weight: 500;
     }
   
@@ -101,4 +101,10 @@
     color: #ced4da;
     pointer-events: none;
     height: 0;
+  }
+
+  .blogs {
+    h1 {
+      margin-bottom: 0.6rem;
+    }
   }

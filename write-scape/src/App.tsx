@@ -25,7 +25,6 @@ function App() {
           Authorization: `Bearer ${token}`
         }
       }).then( res => {
-        alert("then is happening")
         setUser(res.data)
         setIsSignedIn(true)
       })
