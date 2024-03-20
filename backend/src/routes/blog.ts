@@ -14,7 +14,7 @@ export const blogRouter = new Hono<{
     }
 }>()
 
-const authMiddleware =  async (c:any , next:any) => {
+export const authMiddleware =  async (c:any , next:any) => {
     const header = c.req.header("authorization") || "";
     const token = header.split(" ")[1]
   
