@@ -26,7 +26,6 @@ const BlogCard = ({
     const secondElement = content.content[1]
     secondElement.content[0].text = secondElement.content[0].text.length > 150 ? secondElement.content[0].text.slice(0 , 150) + "..." : secondElement.content[0].text
     shorterContent.content = [content.content[0], secondElement]
-    console.log(shorterContent)
     
     const contentHtml = generateHTML(content, extensions)
 

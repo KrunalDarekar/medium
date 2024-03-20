@@ -11,6 +11,7 @@ import { useEffect } from 'react'
 import axios from 'axios'
 import { BACKEND_URL } from './config'
 import "./App.css"
+import { Toaster } from './components/ui/toaster'
 
 function App() {
   const setUser = useSetRecoilState(userAtom);
@@ -34,6 +35,7 @@ function App() {
   return (
     <>
       <BrowserRouter>
+        <Toaster/>
         <Routes>
           <Route path="/" element={<Landing/>}></Route>
           <Route path="/signup" element={<Signup />} />
