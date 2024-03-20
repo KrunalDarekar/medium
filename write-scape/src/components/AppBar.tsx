@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import Avatar from "./Avatar"
 import { useRecoilValue, useSetRecoilState } from "recoil"
 import { isSignedInAtom, userAtom } from "../state/atoms/atoms"
@@ -14,11 +14,11 @@ import {
 import { Label } from "./ui/label"
 import { Input } from "./ui/input"
 import { useState } from "react"
-import { Button } from "./ui/button"
 import { Textarea } from "./ui/textarea"
 import axios from "axios"
 import { BACKEND_URL } from "@/config"
 import { useToast } from "./ui/use-toast"
+import { Separator } from "./ui/separator"
   
 
 const AppBar = () => {
@@ -29,10 +29,11 @@ const AppBar = () => {
     const [userDescription, setUserDescription] = useState(user.description)
     const isSignedIn = useRecoilValue(isSignedInAtom)
     const { toast } = useToast()
+    const navigate = useNavigate()
 
     const onSave = async() => {
         try{
-            const response = await axios.post(`${BACKEND_URL}/api/v1/user/edit`, {
+            const response = await axios.put(`${BACKEND_URL}/api/v1/user/edit`, {
                 name: userName,
                 description: userDescription
               },{
@@ -52,7 +53,7 @@ const AppBar = () => {
                 toast({
                     variant: "destructive",
                     title: "Uh oh! Something went wrong.",
-                    description: e.response.error,
+                    description: e.response.data.error,
                   })
             } else {
                 toast({
@@ -62,6 +63,11 @@ const AppBar = () => {
                 })
             }
         }
+    }
+
+    const handleLogOut = () => {
+        localStorage.removeItem('token')
+        navigate('/signin')
     }
     
     return (
@@ -77,7 +83,7 @@ const AppBar = () => {
                 {!isSignedIn && <Link to={"/signin"} className="self-center mr-4 hover:text-gray-500 hidden md:block">
                     Log in
                 </Link>}
-                {!isSignedIn && <Link to={"/signup"} className="flex items-center mr-4 bg-black text-white rounded-full px-4 hover:bg-gray-700">
+                {!isSignedIn && <Link to={"/signup"} className="flex items-center mr-4 bg-black text-white rounded-full py-1 px-4 hover:bg-gray-700">
                     Sign up
                 </Link>}
                 {isSignedIn && <Sheet>
@@ -112,10 +118,24 @@ const AppBar = () => {
                             </div>
                         </div>
                         <div className="flex justify-center">
-                        <SheetClose className="bg-black text-white py-2 px-4 rounded-md" onClick={onSave}>
+                        <SheetClose className="bg-black text-white py-2 px-4 rounded-md hover:bg-slate-800" onClick={onSave}>
                             Save changes
                         </SheetClose>
                         </div>
+                        <Separator className="my-2"/>
+                        <SheetTitle>Settings</SheetTitle>
+                        <button className="flex hover:text-slate-500 my-2 ml-[-4px]">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6 mr-2">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
+                            </svg>
+                            Your blogs
+                        </button>
+                        <button onClick={handleLogOut} className="flex hover:text-slate-500 my-2 ml-[-4px]">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6 mr-2">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                            </svg>
+                            Log out
+                        </button>
                     </SheetContent>
                 </Sheet>}
             </div>

@@ -3,6 +3,7 @@ import { ChangeEvent, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { BACKEND_URL } from "../config"
 import axios from "axios"
+import { useToast } from "./ui/use-toast"
 
 export const Auth = ({action}: authProps) => {
     const anti = action === "Sign up"? "Login" : "Sign up"
@@ -10,6 +11,7 @@ export const Auth = ({action}: authProps) => {
     const subHeadingContent = action === "Sign up" ? "Already have an account?" : "Don't have an account?"
     const redirect = action === "Sign up"? "/signin" : "/signup"
     const navigate = useNavigate()
+    const { toast } = useToast()
 
     const [postInputs, setPostInputs] = useState<SignupInput>({
         name: "",
@@ -24,12 +26,24 @@ export const Auth = ({action}: authProps) => {
             const jwt = response.data.jwt
             localStorage.setItem("token", jwt)
             navigate('/')
+            toast({
+                title: action === "Sign up" ? "Signed up!" : "Logged in!",
+                description: action == "Sign up" ? "Account created successfully" : "Account accessed successfully"
+            })
         } catch(e: any) {
             console.log(e)
             if(e.response) {
-                alert(e.response.data.error)
+                toast({
+                    variant: "destructive",
+                    title: "oh! something went wrong",
+                    description: e.response.data.error
+                })
             } else {
-                alert("error reaching server try again")
+                toast({
+                    variant: "destructive",
+                    title: "oh! something went wrong",
+                    description: "error reaching server try again"
+                })
             }
         }
     }
