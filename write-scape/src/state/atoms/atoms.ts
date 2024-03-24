@@ -5,7 +5,8 @@ export const userAtom = atom({
     default: {
         name: "Anonymous",
         email: null,
-        description: ""
+        description: "",
+        id: "",
     }
 })
 

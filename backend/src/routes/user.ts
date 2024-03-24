@@ -42,6 +42,7 @@ userRouter.get('/me', async(c) => {
         id: res.id
       },
       select: {
+        id: true,
         name: true,
         email: true,
         description: true,

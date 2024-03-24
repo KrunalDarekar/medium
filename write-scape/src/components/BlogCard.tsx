@@ -3,6 +3,7 @@ import Avatar from "./Avatar"
 import { generateHTML } from "@tiptap/react"
 import { extensions } from "./Tiptap"
 import parse from 'html-react-parser';
+import moment from "moment";
 
 interface content {
     content: Array<any>,
@@ -22,6 +23,7 @@ const BlogCard = ({
     publishedDate,
     id,
 }:BlogCardProps) => {
+    const relativeTime = moment(new Date(publishedDate)).fromNow()
     const shorterContent = content
     const secondElement = content.content[1]
     secondElement.content[0].text = secondElement.content[0].text.length > 150 ? secondElement.content[0].text.slice(0 , 150) + "..." : secondElement.content[0].text
@@ -34,7 +36,7 @@ const BlogCard = ({
         <div className="flex items-center mb-2">
             <Avatar name={authorName} size="small"/>
             <div className="mx-2">{authorName}</div>
-            <div className="text-xs text-gray-400"> published on {publishedDate}</div>
+            <div className="text-xs text-gray-400"> published {relativeTime}</div>
         </div>
         <div className="tiptap blogs">{parse(contentHtml)}</div>
     </div>

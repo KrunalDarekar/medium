@@ -9,7 +9,7 @@ import SigninFlag from "../components/SinginFlag"
 
 export const Blog = () => {
     const {id} = useParams()
-    const {loading, blog} = useBlog({
+    const {loading, blog, error} = useBlog({
         id: id || ""
     })
     const isSignedIn = useRecoilValue(isSignedInAtom)
@@ -29,10 +29,12 @@ export const Blog = () => {
             </div>
         )
     } else {
-        return (
-            <div>
-                no blog
+        return <div className="w-full h-screen">
+            <AppBar/>
+            <div className="w-full flex flex-col justify-center items-center">
+                <div className="text-9xl mt-52">404</div>
+                <div>{error}</div>
             </div>
-        )
+        </div>
     }
 }

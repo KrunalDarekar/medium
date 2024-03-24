@@ -79,17 +79,26 @@ blogRouter.put("/", authMiddleware , async(c) => {
         })
     }
 
-    const blog = await prisma.post.update({
-        where: {
-            id: body.id
-        },
-        data: {
-            content: body.content
-        }
-    })
-    return c.json({
-        id: blog.id
-    })
+    try {
+        const blog = await prisma.post.update({
+            where: {
+                id: body.id,
+                authorId: c.get('userId')
+            },
+            data: {
+                content: body.content
+            }
+        })
+        return c.json({
+            id: blog.id
+        })
+    } catch {
+        c.status(403)
+        return c.json({
+            error: "error while updating blog"
+        })
+    }
+
 })
 
 blogRouter.get("/bulk", async(c) => {
@@ -105,7 +114,8 @@ blogRouter.get("/bulk", async(c) => {
                     name: true,
                 }
             },
-            id: true
+            id: true,
+            createdAt: true,
         }
     })
 
@@ -128,14 +138,24 @@ blogRouter.get("/:id", async(c) => {
                 id
             },
             select: {
+                id: true,
                 content: true,
                 author: {
                     select: {
                         name: true,
+                        description: true
                     }
                 },
+                createdAt: true,
+                authorId: true,
             }
         })
+        if(!blog) {
+            c.status(411)
+            return c.json({
+                error: "error while fetching blog"
+            })
+        }
     
         return c.json(blog)
     } catch(e) {

@@ -12,6 +12,8 @@ import axios from 'axios'
 import { BACKEND_URL } from './config'
 import "./App.css"
 import { Toaster } from './components/ui/toaster'
+import Edit from './pages/Edit'
+
 
 function App() {
   const setUser = useSetRecoilState(userAtom);
@@ -41,6 +43,7 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/signin" element={<Signin />} />
           <Route path="/blog/:id" element={<Blog />} />
+          <Route path="/edit/:id" element={<Edit />} />
           <Route path="/blogs" element={<Blogs />} />
           <Route path="/create" element={<Create/>} />
         </Routes>

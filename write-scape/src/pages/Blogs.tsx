@@ -29,7 +29,7 @@ export const Blogs = () => {
             <div className="flex flex-col items-center mx-2 md:mx-10 mt-2">
                 {
                     blogs.map( (blog) => 
-                        <BlogCard id={blog.id} key={blog.id} authorName={blog.author.name || "Anonymous"} content={blog.content} publishedDate="04/04/2024"/>
+                        <BlogCard id={blog.id} key={blog.id} authorName={blog.author.name || "Anonymous"} content={blog.content} publishedDate={blog.createdAt}/>
                     )
                 }
             </div>

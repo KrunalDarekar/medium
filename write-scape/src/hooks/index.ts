@@ -2,7 +2,7 @@ import axios from "axios"
 import { useEffect, useState } from "react"
 import { BACKEND_URL } from "../config"
 
-interface content {
+export interface content {
     content: Array<any>,
     type: "doc",
 }
@@ -11,8 +11,11 @@ export interface Blog {
     content: content,
     author: {
         name: string,
+        description: string,
     }
     id: string,
+    createdAt: string,
+    authorId: string,
 }
 
 export const useBlogs = () => {
@@ -39,6 +42,7 @@ export const useBlogs = () => {
 export const useBlog = ({ id }: { id: string }) => {
     const [blog, setBlog] = useState<Blog>()
     const [loading, setLoading] = useState(true)
+    const [error, setError] = useState("")
     useEffect(() => {
         axios.get(`${BACKEND_URL}/api/v1/blog/${id}`, {
             headers: {
@@ -49,10 +53,15 @@ export const useBlog = ({ id }: { id: string }) => {
             setBlog(res.data)
             setLoading(false)
         })
+        .catch(() => {
+            setError("error while fetching blog")
+            setLoading(false)
+        })
     },[])
 
     return {
         blog,
-        loading
+        loading,
+        error
     }
 }

@@ -7,6 +7,7 @@ import { useState } from 'react'
 import axios from 'axios'
 import { BACKEND_URL } from '../config'
 import { useNavigate } from 'react-router-dom'
+import { content } from '@/hooks'
 
 const CustomDocument = Document.extend({
   content: 'heading block*',
@@ -28,9 +29,7 @@ export const extensions = [
   })
 ]
 
-const content = ``
-
-const Tiptap = () => {
+const EditTiptap = ({content, id}:{content:content, id:string}) => {
 
   const [isDisabled, setIsDisabled] = useState(false);
   const navigate = useNavigate()
@@ -40,19 +39,20 @@ const Tiptap = () => {
     content,
   })
 
-  const publish = async() => {
+  const update = async() => {
     setIsDisabled(true)
     const content = editor?.getJSON() || {}
     try{
-      const response = await axios.post( `${BACKEND_URL}/api/v1/blog`, {
-        content
+      const response = await axios.put( `${BACKEND_URL}/api/v1/blog`, {
+        content,
+        id
       },{
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         }
       })
-      const id = response.data.id
-      navigate(`/blog/${id}`)
+      const Blogid = response.data.id
+      navigate(`/blog/${Blogid}`)
     } catch(e: any) {
       if(e.response.errror) {
         alert(e.response.error)
@@ -74,11 +74,11 @@ const Tiptap = () => {
         <div className='border-x border-gray-500 mt-10'>
           <EditorContent editor={editor} className='h-96 px-2 overflow-y-scroll scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-slate-400 scrollbar-track-transparent scrollbar-conrner-transparent'/>
         </div>
-        <button onClick={publish} disabled={isDisabled} className={`md:self-center md:px-20 mt-5 md:mt-10 border bg-green-600 hover:bg-green-500 rounded-lg text-lg text-white font-semibold px-4 py-1 ${isDisabled ? 'cursor-not-allowed': ''}`}>
+        <button onClick={update} disabled={isDisabled} className={`md:self-center md:px-20 mt-5 md:mt-10 border bg-green-600 hover:bg-green-500 rounded-lg text-lg text-white font-semibold px-4 py-1 ${isDisabled ? 'cursor-not-allowed': ''}`}>
             {isDisabled ? <div className="flex items-center">
             <div className="w-5 h-5 mr-2 border-2 border-green-400 border-t-white rounded-full animate-spin"></div>
-              Publishing...
-            </div> : "Publish"}
+              Updating...
+            </div> : "Update"}
         </button>
       </div>
     </div>
@@ -87,4 +87,4 @@ const Tiptap = () => {
 }
 
 
-export default Tiptap
+export default EditTiptap
