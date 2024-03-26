@@ -13,6 +13,7 @@ import { BACKEND_URL } from './config'
 import "./App.css"
 import { Toaster } from './components/ui/toaster'
 import Edit from './pages/Edit'
+import My from './pages/My'
 
 
 function App() {
@@ -46,6 +47,7 @@ function App() {
           <Route path="/edit/:id" element={<Edit />} />
           <Route path="/blogs" element={<Blogs />} />
           <Route path="/create" element={<Create/>} />
+          <Route path="/my" element={<My/>} />
         </Routes>
       </BrowserRouter>
     </>
