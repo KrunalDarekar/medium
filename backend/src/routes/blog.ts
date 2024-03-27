@@ -40,6 +40,31 @@ export const authMiddleware =  async (c:any , next:any) => {
     }
   }
 
+const pseudoAuthMiddleware =  async (c:any , next:any) => {
+    const header = c.req.header("authorization") || "";
+    const token = header.split(" ")[1]
+  
+    if(!token){
+      c.status(403)
+      return c.json({ error : "user unauthorised"})
+    }
+
+    try {
+        const res = await verify(token, c.env.JWT_SECRET)
+  
+        if(!res.id){
+        c.status(403)
+        return c.json({ error : "user unauthorised"})
+        }
+
+        c.set('userId', res.id)
+        await next()
+    } catch(e) {
+        await next()
+    }
+}
+
+
 blogRouter.post("/", authMiddleware, async(c) => {
     const prisma = new PrismaClient({
         datasourceUrl: c.env.DATABASE_URL,
@@ -158,7 +183,7 @@ blogRouter.get('/my', authMiddleware, async(c) => {
     })
 })
   
-blogRouter.get("/:id", async(c) => {
+blogRouter.get("/:id", pseudoAuthMiddleware, async(c) => {
 
     try {
         const prisma = new PrismaClient({
@@ -166,10 +191,11 @@ blogRouter.get("/:id", async(c) => {
         }).$extends(withAccelerate())
     
         const id = c.req.param('id')
+        const userId = c.get('userId')
     
         const blog = await prisma.post.findUnique({
             where: {
-                id
+                id,
             },
             select: {
                 id: true,
@@ -185,11 +211,23 @@ blogRouter.get("/:id", async(c) => {
                 published: true,
             }
         })
+
         if(!blog) {
             c.status(411)
             return c.json({
                 error: "error while fetching blog"
             })
+        }
+
+        if(!blog.published) {
+            if(blog.authorId === userId) {
+                return c.json(blog)
+            } else {
+                c.status(411)
+                return c.json({
+                    error: "error while fetching blog"
+                })
+            }
         }
     
         return c.json(blog)
@@ -200,4 +238,34 @@ blogRouter.get("/:id", async(c) => {
         })
     }
 
+})
+
+blogRouter.delete('/:id', authMiddleware , async(c) => {
+    try {
+        const prisma = new PrismaClient({
+            datasourceUrl: c.env.DATABASE_URL,
+        }).$extends(withAccelerate())
+    
+        const id = c.req.param('id')
+        const userId = c.get('userId')
+
+        console.log(userId)
+
+        const blog = await prisma.post.delete({
+            where: {
+                id,
+                authorId: userId
+            }
+        })
+
+        return c.json({
+            message: "blog deleted successfully"
+        })
+    } catch(e) {
+        console.log(e)
+        c.status(411)
+        return c.json({
+            error: "error while deleting the blog"
+        })
+    }
 })
