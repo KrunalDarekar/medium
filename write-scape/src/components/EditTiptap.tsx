@@ -8,6 +8,8 @@ import axios from 'axios'
 import { BACKEND_URL } from '../config'
 import { useNavigate } from 'react-router-dom'
 import { content } from '@/hooks'
+import { UpdateBlogInput } from '@krunal-darekar/medium-common'
+import { useToast } from './ui/use-toast'
 
 const CustomDocument = Document.extend({
   content: 'heading block*',
@@ -31,22 +33,26 @@ export const extensions = [
 
 const EditTiptap = ({content, id}:{content:content, id:string}) => {
 
-  const [isDisabled, setIsDisabled] = useState(false);
+  const [isPublishDisabled, setIsPublishDisabled] = useState(false);
+  const [isSaveDisabled, setIsSaveDisabled] = useState(false)
   const navigate = useNavigate()
+  const { toast } = useToast()
 
   const editor = useEditor({
     extensions,
     content,
   })
 
-  const update = async() => {
-    setIsDisabled(true)
+  const publish = async() => {
+    setIsPublishDisabled(true)
     const content = editor?.getJSON() || {}
+    const publishInputs: UpdateBlogInput = {
+      content,
+      id,
+      published: true
+    }
     try{
-      const response = await axios.put( `${BACKEND_URL}/api/v1/blog`, {
-        content,
-        id
-      },{
+      const response = await axios.put( `${BACKEND_URL}/api/v1/blog`, publishInputs ,{
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         }
@@ -54,11 +60,38 @@ const EditTiptap = ({content, id}:{content:content, id:string}) => {
       const Blogid = response.data.id
       navigate(`/blog/${Blogid}`)
     } catch(e: any) {
-      if(e.response.errror) {
-        alert(e.response.error)
-      } else {
-        alert("request failed check your connection")
-      }
+      toast({
+        variant: "destructive",
+        title: "uh oh! something went wrong.",
+        description: "request failed check your connection."
+      })
+      setIsPublishDisabled(false)
+    }
+  }
+
+  const save = async() => {
+    setIsSaveDisabled(true)
+    const content = editor?.getJSON() || {}
+    const saveInputs:UpdateBlogInput = {
+      content,
+      id,
+      published: false,
+    }
+    try{
+      const response = await axios.put( `${BACKEND_URL}/api/v1/blog`, saveInputs ,{
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      })
+      const Blogid = response.data.id
+      navigate(`/blog/${Blogid}`)
+    } catch(e: any) {
+      toast({
+        variant: "destructive",
+        title: "uh oh! something went wrong.",
+        description: "request failed check your connection."
+      })
+      setIsSaveDisabled(false)
     }
   }
 
@@ -74,12 +107,20 @@ const EditTiptap = ({content, id}:{content:content, id:string}) => {
         <div className='border-x border-gray-500 mt-10'>
           <EditorContent editor={editor} className='h-96 px-2 overflow-y-scroll scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-slate-400 scrollbar-track-transparent scrollbar-conrner-transparent'/>
         </div>
-        <button onClick={update} disabled={isDisabled} className={`md:self-center md:px-20 mt-5 md:mt-10 border bg-green-600 hover:bg-green-500 rounded-lg text-lg text-white font-semibold px-4 py-1 ${isDisabled ? 'cursor-not-allowed': ''}`}>
-            {isDisabled ? <div className="flex items-center">
-            <div className="w-5 h-5 mr-2 border-2 border-green-400 border-t-white rounded-full animate-spin"></div>
-              Updating...
-            </div> : "Update"}
-        </button>
+        <div className='flex justify-evenly'>
+          <button onClick={publish} disabled={isPublishDisabled} className={`md:self-center md:px-20 mt-5 md:mt-10 border bg-green-600 hover:bg-green-500 rounded-lg text-lg text-white font-semibold px-4 py-1 ${isPublishDisabled ? 'cursor-not-allowed': ''}`}>
+              {isPublishDisabled ? <div className="flex items-center">
+              <div className="w-5 h-5 mr-2 border-2 border-green-400 border-t-white rounded-full animate-spin"></div>
+                Publishing...
+              </div> : "Publish"}
+          </button>
+          <button onClick={save} disabled={isSaveDisabled} className={`md:self-center md:px-20 mt-5 md:mt-10 border bg-yellow-600 hover:bg-yellow-500 rounded-lg text-lg text-white font-semibold px-4 py-1 ${isSaveDisabled ? 'cursor-not-allowed': ''}`}>
+              {isSaveDisabled ? <div className="flex items-center">
+              <div className="w-5 h-5 mr-2 border-2 border-yellow-400 border-t-white rounded-full animate-spin"></div>
+                saving...
+              </div> : "Save to draft"}
+          </button>
+        </div>
       </div>
     </div>
     </>

@@ -16,6 +16,7 @@ export interface Blog {
     id: string,
     createdAt: string,
     authorId: string,
+    published: boolean,
 }
 
 export const useBlogs = () => {

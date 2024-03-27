@@ -7,6 +7,7 @@ import { useState } from 'react'
 import axios from 'axios'
 import { BACKEND_URL } from '../config'
 import { useNavigate } from 'react-router-dom'
+import { useToast } from './ui/use-toast'
 
 const CustomDocument = Document.extend({
   content: 'heading block*',
@@ -32,8 +33,10 @@ const content = ``
 
 const Tiptap = () => {
 
-  const [isDisabled, setIsDisabled] = useState(false);
+  const [isPublishDisabled, setIsPublishedDisabled] = useState(false);
+  const [isSaveDisabled, setIsSaveDisabled] = useState(false)
   const navigate = useNavigate()
+  const { toast } = useToast()
 
   const editor = useEditor({
     extensions,
@@ -41,11 +44,12 @@ const Tiptap = () => {
   })
 
   const publish = async() => {
-    setIsDisabled(true)
+    setIsPublishedDisabled(true)
     const content = editor?.getJSON() || {}
     try{
       const response = await axios.post( `${BACKEND_URL}/api/v1/blog`, {
-        content
+        content,
+        published: true,
       },{
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -54,11 +58,36 @@ const Tiptap = () => {
       const id = response.data.id
       navigate(`/blog/${id}`)
     } catch(e: any) {
-      if(e.response.errror) {
-        alert(e.response.error)
-      } else {
-        alert("request failed check your connection")
-      }
+      toast({
+        variant: "destructive",
+        title: "uh oh! something went wrong.",
+        description: "request failed check your connection."
+      })
+      setIsPublishedDisabled(false)
+    }
+  }
+
+  const save = async() => {
+    setIsSaveDisabled(true)
+    const content = editor?.getJSON() || {}
+    try{
+      const response = await axios.post( `${BACKEND_URL}/api/v1/blog`, {
+        content,
+        published: false,
+      },{
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      })
+      const id = response.data.id
+      navigate(`/blog/${id}`)
+    } catch(e: any) {
+      toast({
+        variant: "destructive",
+        title: "uh oh! something went wrong.",
+        description: "request failed check your connection."
+      })
+      setIsSaveDisabled(false)
     }
   }
 
@@ -74,12 +103,20 @@ const Tiptap = () => {
         <div className='border-x border-gray-500 mt-10'>
           <EditorContent editor={editor} className='h-96 px-2 overflow-y-scroll scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-slate-400 scrollbar-track-transparent scrollbar-conrner-transparent'/>
         </div>
-        <button onClick={publish} disabled={isDisabled} className={`md:self-center md:px-20 mt-5 md:mt-10 border bg-green-600 hover:bg-green-500 rounded-lg text-lg text-white font-semibold px-4 py-1 ${isDisabled ? 'cursor-not-allowed': ''}`}>
-            {isDisabled ? <div className="flex items-center">
-            <div className="w-5 h-5 mr-2 border-2 border-green-400 border-t-white rounded-full animate-spin"></div>
-              Publishing...
-            </div> : "Publish"}
-        </button>
+        <div className='flex justify-evenly'>
+          <button onClick={publish} disabled={isPublishDisabled} className={`md:self-center md:px-20 mt-5 md:mt-10 border bg-green-600 hover:bg-green-500 rounded-lg text-lg text-white font-semibold px-4 py-1 ${isPublishDisabled ? 'cursor-not-allowed': ''}`}>
+              {isPublishDisabled ? <div className="flex items-center">
+              <div className="w-5 h-5 mr-2 border-2 border-green-400 border-t-white rounded-full animate-spin"></div>
+                Publishing...
+              </div> : "Publish"}
+          </button>
+          <button onClick={save} disabled={isSaveDisabled} className={`md:self-center md:px-20 mt-5 md:mt-10 border bg-yellow-600 hover:bg-yellow-500 rounded-lg text-lg text-white font-semibold px-4 py-1 ${isSaveDisabled ? 'cursor-not-allowed': ''}`}>
+              {isSaveDisabled ? <div className="flex items-center">
+              <div className="w-5 h-5 mr-2 border-2 border-yellow-400 border-t-white rounded-full animate-spin"></div>
+                saving...
+              </div> : "Save to draft"}
+          </button>
+        </div>
       </div>
     </div>
     </>

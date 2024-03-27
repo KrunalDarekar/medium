@@ -4,6 +4,18 @@ import BlogCard from "./BlogCard";
 
 
 const MyBlogs = ({blogs}: {blogs: Blog[]}) => {
+
+    const publishedBlogs: Blog[] = []
+    const draftedBlogs: Blog[] = []
+
+    blogs.forEach( (blog) => {
+        if(blog.published) {
+            publishedBlogs.push(blog)
+        } else {
+            draftedBlogs.push(blog)
+        }
+    })
+
     return (
         <div className="mt-5 md:mt-10">
             <Tabs defaultValue="published" className="">
@@ -16,7 +28,7 @@ const MyBlogs = ({blogs}: {blogs: Blog[]}) => {
                 <TabsContent value="published">
                     <div className="flex flex-col items-center mx-2 md:mx-10 mt-2">
                         {
-                            blogs.map( (blog) => 
+                            publishedBlogs.map( (blog) => 
                                 <BlogCard id={blog.id} key={blog.id} authorName={blog.author.name || "Anonymous"} content={blog.content} publishedDate={blog.createdAt}/>
                             )
                         }
@@ -25,7 +37,7 @@ const MyBlogs = ({blogs}: {blogs: Blog[]}) => {
                 <TabsContent value="drafted">
                     <div className="flex flex-col items-center mx-2 md:mx-10 mt-2">
                         {
-                            blogs.map( (blog) => 
+                            draftedBlogs.map( (blog) => 
                                 <BlogCard id={blog.id} key={blog.id} authorName={blog.author.name || "Anonymous"} content={blog.content} publishedDate={blog.createdAt}/>
                             )
                         }
