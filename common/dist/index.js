@@ -15,9 +15,11 @@ exports.signinInput = zod_1.default.object({
     password: zod_1.default.string().min(6),
 });
 exports.createBlogInput = zod_1.default.object({
-    content: zod_1.default.object({})
+    content: zod_1.default.object({}),
+    published: zod_1.default.boolean()
 });
 exports.updateBlogInput = zod_1.default.object({
     content: zod_1.default.object({}),
     id: zod_1.default.string().uuid(),
+    published: zod_1.default.boolean()
 });
