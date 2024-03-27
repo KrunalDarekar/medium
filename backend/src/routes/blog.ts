@@ -57,7 +57,8 @@ blogRouter.post("/", authMiddleware, async(c) => {
     const blog = await prisma.post.create({
         data: {
             content: body.content,
-            authorId: c.get("userId")
+            authorId: c.get("userId"),
+            published: body.published,
         }
     })
     return c.json({
@@ -86,7 +87,8 @@ blogRouter.put("/", authMiddleware , async(c) => {
                 authorId: c.get('userId')
             },
             data: {
-                content: body.content
+                content: body.content,
+                published: body.published
             }
         })
         return c.json({
@@ -107,6 +109,9 @@ blogRouter.get("/bulk", async(c) => {
     }).$extends(withAccelerate())
 
     const blogs = await prisma.post.findMany({
+        where: {
+            published: true,
+        },
         select: {
             content: true,
             author: {
@@ -144,6 +149,7 @@ blogRouter.get('/my', authMiddleware, async(c) => {
             id: true,
             createdAt: true,
             authorId: true,
+            published: true,
         }
     })
 
@@ -176,6 +182,7 @@ blogRouter.get("/:id", async(c) => {
                 },
                 createdAt: true,
                 authorId: true,
+                published: true,
             }
         })
         if(!blog) {
