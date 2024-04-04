@@ -4,6 +4,7 @@ import { useBlog } from "@/hooks"
 import EditTiptap from "@/components/EditTiptap"
 import { useRecoilValue } from "recoil"
 import { userAtom } from "@/state/atoms/atoms"
+import { EditorSkeleton } from "@/components/skeleton"
 
 const Edit = () => {
     const {id} = useParams()
@@ -13,7 +14,8 @@ const Edit = () => {
     })
     if(loading) {
         return <div>
-            loading
+            <AppBar/>
+            <EditorSkeleton/>
         </div>
     }
 

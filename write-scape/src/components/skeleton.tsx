@@ -86,3 +86,31 @@ export const SingleBlogSkeleton = () => {
         </div>
     )
 }
+
+export const EditorSkeleton = () => {
+
+    return (
+        <div className="w-full flex justify-center">
+            <div className="animate-pulse flex flex-col-reverse md:flex md:flex-col mx-6 md:mx-10 w-full lg:w-1/2">
+                <div className="h-8 bg-gray-300 mt-5 md:mt-10 rounded-lg"></div>
+                <div className="h-96 bg-gray-300 mt-5 md:mt-10 rounded-lg"></div>
+                <div className="flex justify-evenly mt-5 md:mt-10">
+                    <div className="h-8 bg-gray-300 rounded-lg w-44"></div>
+                    <div className="h-8 bg-gray-300 rounded-lg w-44"></div>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+export const YourBlogsSkeleton = () => {
+
+    return (
+        <div className="flex flex-col items-center mt-5 md:mt-10">
+            <div className="animate-pulse w-full lg:w-2/4 mx-2 md:mx-10">
+                <div className="h-8 bg-gray-300 rounded-lg mx-2"></div>
+            </div>
+            <BlogsSkeleton/>
+        </div>
+    )
+}

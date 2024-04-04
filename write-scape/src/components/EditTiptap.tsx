@@ -1,4 +1,4 @@
-import { useEditor, EditorContent, FloatingMenu, BubbleMenu, generateHTML, nodeInputRule } from '@tiptap/react'
+import { useEditor, EditorContent } from '@tiptap/react'
 import Document from '@tiptap/extension-document'
 import Placeholder from '@tiptap/extension-placeholder'
 import StarterKit from '@tiptap/starter-kit'

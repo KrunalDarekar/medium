@@ -2,7 +2,7 @@ import { Editor } from "@tiptap/react";
 
 const EditorMenu = ({editor}: {editor: Editor}) => {
   return (
-    <div className="mb-5 flex justify-center mt-10 md:bg-gray-200 md:py-1.5 rounded-md">
+    <div className="mb-5 flex justify-center mt-5 md:mt-10 md:bg-gray-200 md:py-1.5 rounded-md">
             <div className='flex gap-2 flex-wrap'>
      <button
         onClick={() => editor.chain().focus().toggleBold().run()}

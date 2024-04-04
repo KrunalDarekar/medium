@@ -1,5 +1,6 @@
 import AppBar from "@/components/AppBar";
 import MyBlogs from "@/components/MyBlogs";
+import { YourBlogsSkeleton } from "@/components/skeleton";
 import { useMyBlogs } from "@/hooks"
 import { Link } from "react-router-dom";
 
@@ -8,7 +9,8 @@ const My = () => {
 
     if(loading) {
         return <div>
-            loading
+            <AppBar/>
+            <YourBlogsSkeleton/>
         </div>
     }
 

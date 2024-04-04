@@ -74,6 +74,7 @@ const FullBlog = ({blog}: { blog: Blog}) => {
                         </svg>
                         Update
                     </Button>
+                    
                     <AlertDialog>
                         <AlertDialogTrigger asChild>
                             <Button className="">
