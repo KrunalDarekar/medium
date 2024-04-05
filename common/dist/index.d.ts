@@ -26,25 +26,61 @@ export declare const signinInput: z.ZodObject<{
 export type SigninInput = z.infer<typeof signinInput>;
 export declare const createBlogInput: z.ZodObject<{
     content: z.ZodObject<{}, "strip", z.ZodTypeAny, {}, {}>;
+    image: z.ZodObject<{
+        imageUrl: z.ZodString;
+        publicId: z.ZodString;
+    }, "strip", z.ZodTypeAny, {
+        imageUrl: string;
+        publicId: string;
+    }, {
+        imageUrl: string;
+        publicId: string;
+    }>;
     published: z.ZodBoolean;
 }, "strip", z.ZodTypeAny, {
     content: {};
+    image: {
+        imageUrl: string;
+        publicId: string;
+    };
     published: boolean;
 }, {
     content: {};
+    image: {
+        imageUrl: string;
+        publicId: string;
+    };
     published: boolean;
 }>;
 export type CreateBlogInput = z.infer<typeof createBlogInput>;
 export declare const updateBlogInput: z.ZodObject<{
     content: z.ZodObject<{}, "strip", z.ZodTypeAny, {}, {}>;
+    image: z.ZodObject<{
+        imageUrl: z.ZodString;
+        publicId: z.ZodString;
+    }, "strip", z.ZodTypeAny, {
+        imageUrl: string;
+        publicId: string;
+    }, {
+        imageUrl: string;
+        publicId: string;
+    }>;
     id: z.ZodString;
     published: z.ZodBoolean;
 }, "strip", z.ZodTypeAny, {
     content: {};
+    image: {
+        imageUrl: string;
+        publicId: string;
+    };
     published: boolean;
     id: string;
 }, {
     content: {};
+    image: {
+        imageUrl: string;
+        publicId: string;
+    };
     published: boolean;
     id: string;
 }>;

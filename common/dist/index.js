@@ -16,10 +16,18 @@ exports.signinInput = zod_1.default.object({
 });
 exports.createBlogInput = zod_1.default.object({
     content: zod_1.default.object({}),
+    image: zod_1.default.object({
+        imageUrl: zod_1.default.string(),
+        publicId: zod_1.default.string()
+    }),
     published: zod_1.default.boolean()
 });
 exports.updateBlogInput = zod_1.default.object({
     content: zod_1.default.object({}),
+    image: zod_1.default.object({
+        imageUrl: zod_1.default.string(),
+        publicId: zod_1.default.string()
+    }),
     id: zod_1.default.string().uuid(),
     published: zod_1.default.boolean()
 });
