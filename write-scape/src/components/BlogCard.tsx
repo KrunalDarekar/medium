@@ -4,6 +4,7 @@ import { generateHTML } from "@tiptap/react"
 import { extensions } from "./Tiptap"
 import parse from 'html-react-parser';
 import moment from "moment";
+import { image } from "@/hooks";
 
 interface content {
     content: Array<any>,
@@ -13,23 +14,28 @@ interface content {
 interface BlogCardProps {
     authorName: string,
     content: content,
-    publishedDate: string
+    image: image,
+    publishedDate: string,
     id: string
 }
 
 const BlogCard = ({
     authorName,
     content,
+    image,
     publishedDate,
     id,
 }:BlogCardProps) => {
     const relativeTime = moment(new Date(publishedDate)).fromNow()
     const shorterContent = content
-    const secondElement = content.content[1]
-    secondElement.content[0].text = secondElement.content[0].text.length > 150 ? secondElement.content[0].text.slice(0 , 150) + "..." : secondElement.content[0].text
-    shorterContent.content = [content.content[0], secondElement]
+    let secondElement
+    if(content.content[1]) {
+        secondElement = content.content[1] 
+        secondElement.content[0].text = secondElement.content[0].text.length > 150 ? secondElement.content[0].text.slice(0 , 150) + "..." : secondElement.content[0].text
+        shorterContent.content = [content.content[0], secondElement]
+    }
     
-    const contentHtml = generateHTML(content, extensions)
+    const contentHtml = generateHTML(shorterContent, extensions)
 
     return <Link to={`/blog/${id}`} className="w-full lg:w-1/2 mx-2 md:mx-10 overflow-hidden">
     <div className="flex flex-col w-full border-b border-slate-300 p-4">
@@ -38,7 +44,12 @@ const BlogCard = ({
             <div className="mx-2">{authorName}</div>
             <div className="text-xs text-gray-400"> published {relativeTime}</div>
         </div>
+        <div>
         <div className="tiptap blogs">{parse(contentHtml)}</div>
+        <div>
+            <img src={image.imageUrl} alt="" />
+        </div>
+        </div>
     </div>
     </Link>
 }

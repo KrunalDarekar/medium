@@ -42,7 +42,7 @@ const Edit = () => {
     return (
         <div>
             <AppBar />
-            <EditTiptap content={blog.content} id={id || ""}/>
+            <EditTiptap content={blog.content} id={id || ""} image={blog.image}/>
         </div>
     )
 }

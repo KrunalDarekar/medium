@@ -7,8 +7,14 @@ export interface content {
     type: "doc",
 }
 
+export interface image {
+    imageUrl: string,
+    publicId: string
+}
+
 export interface Blog {
     content: content,
+    image: image,
     author: {
         name: string,
         description: string,

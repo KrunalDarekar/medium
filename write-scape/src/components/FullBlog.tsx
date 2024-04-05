@@ -64,6 +64,11 @@ const FullBlog = ({blog}: { blog: Blog}) => {
     return <div className="flex justify-center max-w-screen-lg mx-auto mt-5 md:mt-10">
         <div className="grid md:grid-cols-12 w-full px-10">
             <div className="md:col-span-8 tiptap">
+                {blog.image.imageUrl && 
+                    <div>
+                        <img src={blog.image.imageUrl} alt="" className=""/>
+                    </div>
+                }
                 <div>{parse(contentHtml)}</div>
                 <div className="text-slate-400 text-sm mt-5">{`published on ${createdAtDate}`}</div>
                 {user.id === blog.authorId && 

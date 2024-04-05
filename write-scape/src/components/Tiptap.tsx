@@ -36,7 +36,7 @@ const content = ``
 
 const Tiptap = () => {
 
-  const [isPublishDisabled, setIsPublishedDisabled] = useState(false);
+  const [isPublishDisabled, setIsPublishedDisabled] = useState(false)
   const [isSaveDisabled, setIsSaveDisabled] = useState(false)
   const navigate = useNavigate()
   const { toast } = useToast()
@@ -58,7 +58,7 @@ const Tiptap = () => {
     maxImageFileSize: 2000000,  //restrict file size to less than 2MB
     // maxImageWidth: 2000, //Scales the image down to a width of 2000 pixels before uploading
     // theme: "purple", //change to a purple theme
-  });
+  })
 
   const editor = useEditor({
     extensions,
@@ -70,6 +70,10 @@ const Tiptap = () => {
     const content = editor?.getJSON() || {}
     try{
       const response = await axios.post( `${BACKEND_URL}/api/v1/blog`, {
+        image: {
+          imageUrl,
+          publicId
+        },
         content,
         published: true,
       },{
@@ -94,6 +98,10 @@ const Tiptap = () => {
     const content = editor?.getJSON() || {}
     try{
       const response = await axios.post( `${BACKEND_URL}/api/v1/blog`, {
+        image: {
+          imageUrl,
+          publicId
+        },
         content,
         published: false,
       },{
