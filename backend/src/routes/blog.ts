@@ -81,6 +81,7 @@ blogRouter.post("/", authMiddleware, async(c) => {
 
     const blog = await prisma.post.create({
         data: {
+            image: body.image,
             content: body.content,
             authorId: c.get("userId"),
             published: body.published,
@@ -112,6 +113,7 @@ blogRouter.put("/", authMiddleware , async(c) => {
                 authorId: c.get('userId')
             },
             data: {
+                image: body.image,
                 content: body.content,
                 published: body.published
             }
@@ -144,6 +146,7 @@ blogRouter.get("/bulk", async(c) => {
                     name: true,
                 }
             },
+            image: true,
             id: true,
             createdAt: true,
             authorId: true,
@@ -171,6 +174,7 @@ blogRouter.get('/my', authMiddleware, async(c) => {
                     name: true,
                 }
             },
+            image: true,
             id: true,
             createdAt: true,
             authorId: true,
@@ -206,6 +210,7 @@ blogRouter.get("/:id", pseudoAuthMiddleware, async(c) => {
                         description: true
                     }
                 },
+                image: true,
                 createdAt: true,
                 authorId: true,
                 published: true,
