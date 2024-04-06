@@ -19,12 +19,23 @@ import axios from "axios"
 import { BACKEND_URL } from "@/config"
 import { useToast } from "./ui/use-toast"
 import { Separator } from "./ui/separator"
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
   
 
 const AppBar = () => {
     const location = useLocation()
     const user = useRecoilValue(userAtom)
     const setUser = useSetRecoilState(userAtom)
+    const setIsSignedIn = useSetRecoilState(isSignedInAtom)
     const [userName, setUserName] = useState(user.name)
     const [userDescription, setUserDescription] = useState(user.description)
     const isSignedIn = useRecoilValue(isSignedInAtom)
@@ -66,6 +77,7 @@ const AppBar = () => {
     }
 
     const handleLogOut = () => {
+        setIsSignedIn(false)
         localStorage.removeItem('token')
         navigate('/signin')
     }
@@ -130,12 +142,25 @@ const AppBar = () => {
                             </svg>
                             Your blogs
                         </button>
-                        <button onClick={handleLogOut} className="flex hover:text-slate-500 my-2 ml-[-4px]">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6 mr-2">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
-                            </svg>
-                            Log out
-                        </button>
+                        <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                                <button className="flex hover:text-slate-500 my-2 ml-[-4px]">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6 mr-2">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                                    </svg>
+                                    Log out
+                                </button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                                <AlertDialogHeader>
+                                    <AlertDialogTitle>Are you sure about logging out?</AlertDialogTitle>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                    <AlertDialogAction onClick={handleLogOut}>Continue</AlertDialogAction>
+                                </AlertDialogFooter>
+                            </AlertDialogContent>
+                        </AlertDialog>
                     </SheetContent>
                 </Sheet>}
             </div>
