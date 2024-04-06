@@ -1,4 +1,4 @@
-import { useEditor, EditorContent, FloatingMenu, BubbleMenu, generateHTML, nodeInputRule } from '@tiptap/react'
+import { useEditor, EditorContent} from '@tiptap/react'
 import Document from '@tiptap/extension-document'
 import Placeholder from '@tiptap/extension-placeholder'
 import StarterKit from '@tiptap/starter-kit'
@@ -9,8 +9,6 @@ import { BACKEND_URL } from '../config'
 import { useNavigate } from 'react-router-dom'
 import { useToast } from './ui/use-toast'
 import CloudinaryUploadWidget from './CloudinaryUploadWidget'
-import { Cloudinary } from "@cloudinary/url-gen";
-import { AdvancedImage, responsive, placeholder } from "@cloudinary/react";
 
 const CustomDocument = Document.extend({
   content: 'heading block*',

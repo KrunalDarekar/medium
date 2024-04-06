@@ -1,4 +1,4 @@
-import { createContext, useEffect, useRef, useState } from "react";
+import { createContext, useEffect, useRef} from "react";
 
 // Create a context to manage the script loading state
 const CloudinaryScriptContext = createContext({});
@@ -6,18 +6,6 @@ const CloudinaryScriptContext = createContext({});
 function CloudinaryUploadWidget({ uwConfig, setPublicId, setImageUrl, imageUrl }: { uwConfig:object, setPublicId:Function, setImageUrl:Function, imageUrl:string}) {
   const scriptLoadedRef = useRef(false);
 
-  const [imageHeight, setImageHeight] = useState(0);
-  const firstContainerRef = useRef(null);
-  const secondContainerRef = useRef(null);
-
-  useEffect(() => {
-    // Get the height of the image
-    const img = new Image();
-    img.onload = function () {
-      setImageHeight(img.height);
-    };
-    img.src = imageUrl;
-  }, [imageUrl]);
 
   useEffect(() => {
     // Check if the Cloudinary script is already loaded
