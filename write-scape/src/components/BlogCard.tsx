@@ -37,18 +37,18 @@ const BlogCard = ({
     
     const contentHtml = generateHTML(shorterContent, extensions)
 
-    return <Link to={`/blog/${id}`} className="w-full lg:w-1/2 mx-2 md:mx-10 overflow-hidden">
+    return <Link to={`/blog/${id}`} className="w-full lg:w-3/5 mx-2 md:mx-10 overflow-hidden">
     <div className="flex flex-col w-full border-b border-slate-300 p-4">
         <div className="flex items-center mb-2">
             <Avatar name={authorName} size="small"/>
             <div className="mx-2">{authorName}</div>
             <div className="text-xs text-gray-400"> published {relativeTime}</div>
         </div>
-        <div>
-        <div className="tiptap blogs">{parse(contentHtml)}</div>
-        <div>
-            <img src={image.imageUrl} alt="" />
-        </div>
+        <div className="md:flex">
+            <div className="tiptap blogs md:w-8/12 mb-2 md:mb-0">{parse(contentHtml)}</div>
+            <div className="md:ml-auto md:max-w-36 flex justify-center items-center">
+                <img src={image.imageUrl} alt="" />
+            </div>
         </div>
     </div>
     </Link>

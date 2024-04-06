@@ -20,7 +20,7 @@ const MyBlogs = ({blogs}: {blogs: Blog[]}) => {
         <div className="mt-5 md:mt-10">
             <Tabs defaultValue="published" className="">
                 <div className="lg:flex lg:justify-center">
-                <TabsList className="flex mx-2 md:mx-10 lg:w-1/2">
+                <TabsList className="flex mx-2 md:mx-10 lg:w-3/5">
                     <TabsTrigger value="published" className="w-full">Published</TabsTrigger>
                     <TabsTrigger value="drafted" className="w-full">Drafted</TabsTrigger>
                 </TabsList>
