@@ -72,7 +72,7 @@ const AppBar = () => {
     
     return (
         <div className="flex justify-between items-center px-6 md:px-10 py-5 border-b border-slate-300">
-            <Link className="text-xl font-semibold" to={'/blogs'}>
+            <Link className="text-2xl font-bold" to={'/blogs'}>
                 WriteScape
             </Link>
             <div className="flex">
