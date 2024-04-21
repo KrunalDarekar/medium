@@ -29,13 +29,19 @@ const BlogCard = ({
     const relativeTime = moment(new Date(publishedDate)).fromNow()
     const shorterContent = content
     let secondElement
+    
     if(content.content[1]) {
         secondElement = content.content[1] 
-        secondElement.content[0].text = secondElement.content[0].text.length > 150 ? secondElement.content[0].text.slice(0 , 150) + "..." : secondElement.content[0].text
+        if (secondElement.type === "paragraph") {
+            secondElement.content[0].text = secondElement.content[0].text.length > 150 ? secondElement.content[0].text.slice(0 , 150) + "..." : secondElement.content[0].text
+        } else {
+            secondElement = secondElement
+        }
         shorterContent.content = [content.content[0], secondElement]
     }
+
     
-    const contentHtml = generateHTML(shorterContent, extensions)
+    const contentHtml = generateHTML(content, extensions)
 
     return <Link to={`/blog/${id}`} className="w-full lg:w-3/5 mx-2 md:mx-10 overflow-hidden">
     <div className="flex flex-col w-full border-b border-slate-300 p-4">
