@@ -31,8 +31,8 @@ const BlogCard = ({
     let secondElement
     
     if(content.content[1]) {
-        secondElement = content.content[1] 
-        if (secondElement.type === "paragraph") {
+        secondElement = content.content[1]
+        if (secondElement.type === "paragraph" && secondElement.content) {
             secondElement.content[0].text = secondElement.content[0].text.length > 150 ? secondElement.content[0].text.slice(0 , 150) + "..." : secondElement.content[0].text
         } else {
             secondElement = secondElement

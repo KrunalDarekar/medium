@@ -3,10 +3,11 @@ import Tiptap from "../components/Tiptap"
 
 const Create = () => {
 
+
     return (
         <div>
             <AppBar />
-            <Tiptap/>
+            <Tiptap />
         </div>
     )
 }

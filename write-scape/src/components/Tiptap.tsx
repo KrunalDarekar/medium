@@ -38,6 +38,7 @@ const Tiptap = () => {
   const [isSaveDisabled, setIsSaveDisabled] = useState(false)
   const navigate = useNavigate()
   const { toast } = useToast()
+  const [instruction, setInstruction] = useState("")
 
   const [publicId, setPublicId] = useState("")
   const [imageUrl, setImageUrl] = useState("")
@@ -132,8 +133,13 @@ const Tiptap = () => {
           <div>
           <CloudinaryUploadWidget uwConfig={uwConfig} setPublicId={setPublicId} setImageUrl={setImageUrl} imageUrl={imageUrl} />
           </div>
-          <div className='border-x border-gray-500 mt-5 md:mt-10'>
-            <EditorContent editor={editor} className='h-96 px-2 overflow-y-scroll scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-slate-400 scrollbar-track-transparent scrollbar-conrner-transparent'/>
+
+          <div className='mt-2 md:mt-4 text-center text-gray-500'>{instruction}</div>
+
+          <div className='border-x border-gray-500 mt-2 md:mt-4'>
+            <EditorContent onFocus={() => {
+                setInstruction("press enter for next line")
+              }} editor={editor} className='h-96 px-2 overflow-y-scroll scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-slate-400 scrollbar-track-transparent scrollbar-conrner-transparent'/>
           </div>
         </div>
         <div className='flex justify-evenly'>
